@@ -4,7 +4,7 @@ def main ():
     g = Grafo()
 
     vertices = ["a","b","c","d","e","f"]
-    
+
     a = "a"
     b = "b"
     c = "c"
@@ -14,40 +14,37 @@ def main ():
 
     for vertice in vertices:
         g.agregarVertice(vertice)
-    
-    g.agregarArista(a,b)
-    g.agregarArista(a,d)
-    g.agregarArista(a,e)
-    g.agregarArista(a,f)
 
-    g.agregarArista(b,c)
+    g.agregarArista(a,b,1)
+    g.agregarArista(a,d,4)
+    g.agregarArista(a,e,7)
+    g.agregarArista(a,f,8)
 
-    g.agregarArista(c,d)
-    g.agregarArista(c,f)
+    g.agregarArista(b,c,2)
 
-    g.agregarArista(d,e)
-    g.agregarArista(d,f)
+    g.agregarArista(c,d,1)
+    g.agregarArista(c,f,1)
 
-    g.agregarArista(e,f)
+    g.agregarArista(d,e,4)
+    g.agregarArista(d,f,1)
 
-    
-    print("vertices")
-    for v in g:
-        print(v)
+    g.agregarArista(e,f,2)
 
-    print("\nAdyacentes")
-    
-    for v in g:
-        print(v)
-        for w in g.obtenerAdyacentes(v):
-            print("\t",w)
+    padre, distancia = DIJKSTRA(g, "a")
 
-    padre , orden = DFS(g,"a")
+    resultado = []
 
-    print("padres",padre)
-    print("orden",orden)
+    actual = 'e'
+
+    while actual != None:
+        resultado.append(actual)
+        actual = padre[actual]
+
+    resultado.reverse()
+
+    print("DIJKSTRA a->e")
+    print(resultado)
+    print("peso",distancia)
 
 
 main()
-
-
