@@ -1,44 +1,59 @@
-def uphead(arreglo,pos,cmp):
-    if pos == 0 : return
+import os
 
-    padre = (pos - 1) // 2
+def upheap(datos,pos,cmp):
+	if pos==0: return
+	pos_padre = (pos-1)//2
+	if cmp(datos[pos],datos[pos_padre]) > 0: return
+	datos[pos],datos[pos_padre] = datos[pos_padre],datos[pos]
+	upheap(datos,pos_padre,cmp)
 
-    # padre > hijo
-    
-    if cmp (arreglo[padre], arreglo[pos]) > 0:
+def downheap(datos,n,pos,cmp):
+	if pos >= n : return
+	pos_h_izq = (2*pos)+1
+	pos_h_der = (2*pos)+1
+	pos_min = pos
+	if pos_h_izq < n and cmp(datos[pos_h_izq],datos[pos_min]) < 0 :
+		pos_min = pos_h_izq
+	if pos_h_der < n and cmp(datos[pos_h_der],datos[pos_min]) < 0 :
+		pos_min = pos_h_der
+	if pos != pos_min:
+		datos[pos],datos[pos_min]=datos[pos_min],datos[pos]
+		downheap(datos,n,pos_min,cmp)
+	return
 
-        #swap
-        arreglo[padre],arreglo[pos] = arreglo[pos], arreglo[padre]
-        uphead(arreglo,padre,cmp)
+def heapify(arr,n,cmp):
+	for x in range(n,0,-1):
+		downheap(datos,x-1,cmp)
 
-def heap_encolar(arreglo,dato,cmp):
-    arreglo.append(dato)
-    uphead(arreglo,len(arreglo)-1,cmp)
+class Heap:
+	def __init__(self,f_cmp):
+		self.cant = 0
+		self.datos = []
+		self.cmp = f_cmp
 
-def downheap(arreglo, n, padre, cmp):
-    if padre >= n : return
+	def __len__(self):
+		return self.cant
 
-    min = padre
-    izq = (2 * padre) + 1
-    der = (2 * padre) + 2
+	def cantidad(self):
+		return self.cant
 
-    if izq < n and cmp(arreglo[izq], arreglo[min]) < 0 : min = izq
+	def esta_vacio(self):
+		return self.cant == 0
 
-    if der < n and cmp(arreglo[der], arreglo[min]) < 0 : min = der
+	def encolar(self,dato):
+		if dato is None: return False
+		self.datos.append(dato)
+		upheap(self.datos,self.cant,self.cmp)
+		self.cant+=1
+		return True
 
-    if min != padre:
-        #swap
-        arreglo[padre],arreglo[min] = arreglo[min], arreglo[padre]
-        downheap(arreglo, n , min, cmp)
+	def ver_min(self):
+		if self.esta_vacio(): return None
+		return self.datos[0]
 
-def heap_desencolar(arreglo,cmp):
-    if not arreglo: return
-
-    #swap
-    arreglo[0],arreglo[len(arreglo)-1] = arreglo[len(arreglo)-1], arreglo[0]
-
-    dato = arreglo.pop()
-
-    downheap(arreglo, len(arreglo), 0, cmp)
-
-    return dato
+	def desencolar(self):
+		if self.esta_vacio(): return None
+		elem = self.datos.pop(0)
+		self.cant-=1
+		downheap(self.datos,self.cant,0,self.cmp)
+		return elem
