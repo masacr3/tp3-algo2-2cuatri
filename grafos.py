@@ -36,6 +36,11 @@ class Grafo:
     def __iter__(self):
         return iter(self.vertices)
 
+#funciones hechas
+#DFS
+#DIJKSTRA
+#PRIM
+#ORDEN TOPOLOGICO
 
 
 def dfs(grafo, v, visitados, padres, orden):
@@ -125,3 +130,28 @@ def orden_topologico(grafo):
             if grados[adyacente] == 0: cola.encolar(adyacente)
 
     return None if len(resultado) == 0 else resultado
+
+def PRIM(grafo,origen,cmp):
+    visitados = {}
+    visitados.[origen] = origen
+    heap = heap(cmp)
+
+    for adyacente in grafo.obtenerAdyacentes(origen):
+        heap.encolar( [origen, adyacente, grafo.obtenerPeso(inicio, adyacente)] )
+
+    arbol = Grafo(False)
+
+    for vertice in grafo: arbol.agregarVertice(vertice)
+
+    while not heap.esta_vacio():
+        vertice, adyacente, peso = heap.desencolar(heap)
+
+        if adyacente in visitados: continue
+
+        arbol.agregarArista(vertice, adyacente, grafo.obtenerPeso(vertice, adyacente))
+        visitados.[adyacente] = adyacente
+
+        for w in grafo.obtenerAdyacentes(adyacente):
+            heap.encolar( [adyacente, w, grafo.obtenerPeso(adyacente, w)] )
+
+    return arbol
