@@ -74,7 +74,7 @@ def cmp(a,b):
     return (a>b) - (a<b)
 
 
-def DIJKSTRA(grafo, origen):
+def DIJKSTRA(grafo, origen, cmp_dijk):
 
     padre = {}
     distancia = {}
@@ -85,7 +85,7 @@ def DIJKSTRA(grafo, origen):
     distancia[origen] = 0
     padre[origen] = None
 
-    heap = Heap(cmp)
+    heap = Heap(cmp_dijk)
 
     heap.encolar([origen,distancia[origen]])
 
@@ -131,10 +131,10 @@ def orden_topologico(grafo):
 
     return None if len(resultado) == 0 else resultado
 
-def PRIM(grafo,origen,cmp):
+def PRIM(grafo,origen,cmp_prim):
     visitados = {}
     visitados.[origen] = origen
-    heap = heap(cmp)
+    heap = heap(cmp_prim)
 
     for adyacente in grafo.obtenerAdyacentes(origen):
         heap.encolar( [origen, adyacente, grafo.obtenerPeso(inicio, adyacente)] )
