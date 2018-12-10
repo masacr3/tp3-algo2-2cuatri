@@ -89,12 +89,12 @@ def DIJKSTRA(grafo, origen):
     distancia[origen] = 0
     padre[origen] = None
 
-    array = []
+    heap = Heap(cmp)
 
-    heap_encolar(array,[origen,distancia[origen]],cmp)
+    heap.encolar([origen,distancia[origen]])
 
-    while not len(array) == 0:
-        vertice , peso = heap_desencolar(array, cmp)
+    while not heap.esta_vacio():
+        vertice , peso = heap.desencolar()
 
         for adyacente in grafo.obtenerAdyacentes(vertice):
             distanciaActual = distancia[vertice] + grafo.obtenerPeso(vertice, adyacente)
@@ -102,6 +102,6 @@ def DIJKSTRA(grafo, origen):
             if distanciaActual < distancia[adyacente]:
                 padre[adyacente] = vertice
                 distancia[adyacente] = distanciaActual
-                heap_encolar( array, [adyacente, distancia[adyacente]] , cmp )
+                heap.encolar([adyacente,distancia[adyacente]])
 
     return padre, distancia
