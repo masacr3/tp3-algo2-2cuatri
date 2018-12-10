@@ -1,4 +1,5 @@
 from heap import *
+from cola import *
 
 class Grafo:
 
@@ -95,3 +96,32 @@ def DIJKSTRA(grafo, origen):
                 heap.encolar([adyacente,distancia[adyacente]])
 
     return padre, distancia
+
+def orden_topologico(grafo):
+    grados = {}
+
+    for vertice in grafo:
+        grados[vertice] = 0
+
+    for vertice in grafo:
+
+        for adyacente in grafo.obtenerAdyacentes(vertice):
+            grados[adyacente] += 1
+
+    resultado = []
+    cola = Cola()
+
+    for vertice in grafo:
+
+        if grados[vertice] == 0: cola.encolar(vertice)
+
+    while not cola.esta_vacia():
+        vertice = cola.desencolar()
+        resultado.append(vertice)
+
+        for adyacente in grafo.obtenerAdyacentes(vertice):
+            grados[adyacente] -= 1
+
+            if grados[adyacente] == 0: cola.encolar(adyacente)
+
+    return None if len(resultado) == 0 else resultado
