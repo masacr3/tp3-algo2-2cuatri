@@ -65,17 +65,7 @@ def DFS(grafo, origen):
 INFINITO = 9999999 #simulamos un numero gigante
 
 def cmp(a,b):
-    dato1 = a[1]
-    dato2 = b[1]
-
-    if dato1 < dato2:
-        return -1
-
-    elif dato1 > dato2:
-        return 1
-
-    else:
-        return 0
+    return (a>b) - (a<b)
 
 
 def DIJKSTRA(grafo, origen):
