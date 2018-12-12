@@ -1,7 +1,7 @@
 from grafos import *
 
 def main ():
-    g = Grafo()
+    g = Grafo(True)
 
     vertices = ["a","b","c","d","e","f"]
 
@@ -30,21 +30,48 @@ def main ():
 
     g.agregarArista(e,f,2)
 
-    padre, distancia = DIJKSTRA(g, "a")
+    padres, distancia = DIJKSTRA(g, "a")
 
-    resultado = []
+    print("Dijkstra A:")
+    print("padres: ",padres)
+    print("distancia: ",distancia)
 
-    actual = 'e'
+    padres, distancia = DIJKSTRA(g, "b")
 
-    while actual != None:
-        resultado.append(actual)
-        actual = padre[actual]
+    print("Dijkstra B:")
+    print("padres: ",padres)
+    print("distancia: ",distancia)
 
-    resultado.reverse()
+    padres, distancia = DIJKSTRA(g, "c")
 
-    print("DIJKSTRA a->e")
-    print(resultado)
-    print("peso",distancia)
+    print("Dijkstra C:")
+    print("padres: ",padres)
+    print("distancia: ",distancia)
 
+    padres, distancia = DIJKSTRA(g, "d")
+
+    print("Dijkstra D:")
+    print("padres: ",padres)
+    print("distancia: ",distancia)
+
+    padres, distancia = DIJKSTRA(g, "e")
+
+    print("Dijkstra E:")
+    print("padres: ",padres)
+    print("distancia: ",distancia)
+
+    padres, distancia = DIJKSTRA(g, "f")
+
+    print("Dijkstra F:")
+    print("padres: ",padres)
+    print("distancia: ",distancia)
+
+    padres, distancia = DIJKSTRA(g, "g")
+
+    print("Dijkstra G:")
+    print("padres: ",padres)
+    print("distancia: ",distancia)
+
+    print("3 Más centrales usando Dijkstra :",betweenness_centrality(g,3))
 
 main()

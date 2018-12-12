@@ -1,5 +1,4 @@
 from heap import *
-from cola import *
 
 class Grafo:
 
@@ -33,14 +32,12 @@ class Grafo:
     def obtenerAdyacentes(self,vertice):
         return list(self.vertices[vertice])
 
+    def verticePertenece(self,vertice):
+        return vertice in self.vertices
+
     def __iter__(self):
         return iter(self.vertices)
 
-#funciones hechas
-#DFS
-#DIJKSTRA
-#PRIM
-#ORDEN TOPOLOGICO
 
 
 def dfs(grafo, v, visitados, padres, orden):
@@ -74,7 +71,9 @@ def cmp(a,b):
     return (a>b) - (a<b)
 
 
-def DIJKSTRA(grafo, origen, cmp_dijk):
+def DIJKSTRA(grafo, origen):
+
+    if not grafo.verticePertenece(origen): return None,None
 
     padre = {}
     distancia = {}
@@ -85,7 +84,7 @@ def DIJKSTRA(grafo, origen, cmp_dijk):
     distancia[origen] = 0
     padre[origen] = None
 
-    heap = Heap(cmp_dijk)
+    heap = Heap(cmp)
 
     heap.encolar([origen,distancia[origen]])
 
@@ -102,56 +101,30 @@ def DIJKSTRA(grafo, origen, cmp_dijk):
 
     return padre, distancia
 
-def orden_topologico(grafo):
-    grados = {}
 
-    for vertice in grafo:
-        grados[vertice] = 0
+def betweenness_centrality(grafo,n):
+    res = []
+    apariciones = {}
+    l_padres = []
+    for v in grafo:
+        apariciones[v]= 0
+        padre,distancia = DIJKSTRA(grafo,v)
+        l_padres.append(padre)
 
-    for vertice in grafo:
+    for padres in l_padres:
+        for w in padres:
+            if(padres[w]): apariciones[padres[w]]+=1
 
-        for adyacente in grafo.obtenerAdyacentes(vertice):
-            grados[adyacente] += 1
+    print(apariciones)
+    num_apariciones = list(apariciones.values())
+    vertices = list(apariciones.keys())
+    i = 0
+    while i<n and vertices:
+        pos = num_apariciones.index(max(num_apariciones))
+        clave = vertices[pos]
+        res.append(clave)
+        num_apariciones.pop(pos)
+        vertices.pop(pos)
+        i+=1
 
-    resultado = []
-    cola = Cola()
-
-    for vertice in grafo:
-
-        if grados[vertice] == 0: cola.encolar(vertice)
-
-    while not cola.esta_vacia():
-        vertice = cola.desencolar()
-        resultado.append(vertice)
-
-        for adyacente in grafo.obtenerAdyacentes(vertice):
-            grados[adyacente] -= 1
-
-            if grados[adyacente] == 0: cola.encolar(adyacente)
-
-    return None if len(resultado) == 0 else resultado
-
-def PRIM(grafo,origen,cmp_prim):
-    visitados = {}
-    visitados.[origen] = origen
-    heap = heap(cmp_prim)
-
-    for adyacente in grafo.obtenerAdyacentes(origen):
-        heap.encolar( [origen, adyacente, grafo.obtenerPeso(inicio, adyacente)] )
-
-    arbol = Grafo(False)
-
-    for vertice in grafo: arbol.agregarVertice(vertice)
-
-    while not heap.esta_vacio():
-        vertice, adyacente, peso = heap.desencolar(heap)
-
-        if adyacente in visitados: continue
-
-        arbol.agregarArista(vertice, adyacente, grafo.obtenerPeso(vertice, adyacente))
-        visitados.[adyacente] = adyacente
-
-        for w in grafo.obtenerAdyacentes(adyacente):
-            heap.encolar( [adyacente, w, grafo.obtenerPeso(adyacente, w)] )
-
-    return arbol
+    return res
