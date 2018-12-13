@@ -101,30 +101,85 @@ def DIJKSTRA(grafo, origen):
 
     return padre, distancia
 
+def cent_cmp(tupla1,tupla2):
+    return (tupla1[1]>tupla2[1]) - (tupla1[1]<tupla2[1])
 
-def betweenness_centrality(grafo,n):
-    res = []
-    apariciones = {}
-    l_padres = []
+def ordenar_vertices(grafo,distancias,f_cmp):
+    v_aux = Heap(f_cmp)
     for v in grafo:
-        apariciones[v]= 0
-        padre,distancia = DIJKSTRA(grafo,v)
-        l_padres.append(padre)
+        if distancias[v] == INFINITO: continue
+        v_aux.encolar((v,distancias[v]))
+    vertices = []
+    for v,d in v_aux:
+        vertices.append(v)
+    return vertices
 
-    for padres in l_padres:
-        for w in padres:
-            if(padres[w]): apariciones[padres[w]]+=1
+def centralidad(grafo):
+    cent = {}
+    for v in grafo: cent[v] = 0
+    for v in grafo:
+        padre, distancia = DIJKSTRA(grafo,v)
+        cent_aux = {}
+        for w in grafo: cent_aux[w]=0
+        vertices_ordenados = ordenar_vertices(grafo,distancia,cent_cmp)
+        for w in vertices_ordenados:
+            if not w in padre or padre[w] == None: continue
+            cent_aux[padre[w]] += 1 + cent_aux[w]
+        for w in grafo:
+            if w == v: continue
+            cent[w] += cent_aux[w]
+    return cent
 
-    print(apariciones)
-    num_apariciones = list(apariciones.values())
-    vertices = list(apariciones.keys())
-    i = 0
-    while i<n and vertices:
-        pos = num_apariciones.index(max(num_apariciones))
-        clave = vertices[pos]
-        res.append(clave)
-        num_apariciones.pop(pos)
-        vertices.pop(pos)
-        i+=1
+def orden_topologico(grafo):
+    grados = {}
 
-    return res
+    for vertice in grafo:
+        grados[vertice] = 0
+
+    for vertice in grafo:
+
+        for adyacente in grafo.obtenerAdyacentes(vertice):
+            grados[adyacente] += 1
+
+    resultado = []
+    cola = Cola()
+
+    for vertice in grafo:
+
+        if grados[vertice] == 0: cola.encolar(vertice)
+
+    while not cola.esta_vacia():
+        vertice = cola.desencolar()
+        resultado.append(vertice)
+
+        for adyacente in grafo.obtenerAdyacentes(vertice):
+            grados[adyacente] -= 1
+
+            if grados[adyacente] == 0: cola.encolar(adyacente)
+
+    return None if len(resultado) == 0 else resultado
+
+def PRIM(grafo,origen,cmp_prim):
+    visitados = {}
+    visitados.[origen] = origen
+    heap = heap(cmp_prim)
+
+    for adyacente in grafo.obtenerAdyacentes(origen):
+        heap.encolar( [origen, adyacente, grafo.obtenerPeso(inicio, adyacente)] )
+
+    arbol = Grafo(False)
+
+    for vertice in grafo: arbol.agregarVertice(vertice)
+
+    while not heap.esta_vacio():
+        vertice, adyacente, peso = heap.desencolar(heap)
+
+        if adyacente in visitados: continue
+
+        arbol.agregarArista(vertice, adyacente, grafo.obtenerPeso(vertice, adyacente))
+        visitados.[adyacente] = adyacente
+
+        for w in grafo.obtenerAdyacentes(adyacente):
+            heap.encolar( [adyacente, w, grafo.obtenerPeso(adyacente, w)] )
+
+    return arbol

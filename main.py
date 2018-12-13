@@ -72,6 +72,30 @@ def main ():
     print("padres: ",padres)
     print("distancia: ",distancia)
 
-    print("3 Más centrales usando Dijkstra :",betweenness_centrality(g,3))
+    print("centralidad grafo1: ",centralidad(g))
+
+    g2 = Grafo(True)
+
+    vertices = ["a","b","c","d","e","f","h"]
+
+    a = "a"
+    b = "b"
+    c = "c"
+    d = "d"
+    e = "e"
+    f = "f"
+    h = "h"
+
+    for vertice in vertices:
+        g2.agregarVertice(vertice)
+
+    g2.agregarArista(b,a,1)
+    g2.agregarArista(a,c,2)
+    g2.agregarArista(d,a,2)
+    g2.agregarArista(a,f,1)
+    g2.agregarArista(e,f,3)
+    g2.agregarArista(f,h,2)
+
+    print("centralidad grafo 2: ",centralidad(g2))
 
 main()
