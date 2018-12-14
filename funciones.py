@@ -29,10 +29,26 @@ cant_vuelos_entre_aeropuertos = 4
 
 
 def camino_mas_barato(origen,destino,grafo):
-	return True
+	padre, costoVuelo = DIJKSTRA(grafo,origen,cmp_costos)
+
+	caminoMasBarato = []
+	while destino != None:
+		caminoMasBarato.append(destino)
+		destino = padre[destino]
+
+	caminoMasBarato.reverse()
+	return caminoMasBarato
 
 def camino_mas_rapido(origen,destino,grafo):
-	return True
+	padre, costoVuelo = DIJKSTRA(grafo,origen,cmp_rapidez)
+
+	caminoMasBarato = []
+	while destino != None:
+		caminoMasBarato.append(destino)
+		destino = padre[destino]
+
+	caminoMasBarato.reverse()
+	return caminoMasBarato
 
 def f_camino_mas(l_comando,grafo):
 	if len(l_comando) != 2: return False
@@ -56,7 +72,7 @@ def f_camino_escalas(l_comando,grafo):
 
 def f_centralidad(l_comando,grafo):
 	if len(l_comando) != 2: return False
-	
+
 	return True
 
 def f_pagerank(l_comando,grafo):
