@@ -7,33 +7,39 @@ class Grafo:
         self.cantidad = 0
         self.dirigido = dirigido
 
-    def agregarVertice(self, vertice):
-        self.vertices[vertice] = {} #aca van los adyacentes
+    def agregarVertice(self, vertice, dato):
+        self.vertices[vertice] = (dato,{}) #aca van los adyacentes
         self.cantidad += 1
 
-    def agregarArista(self, vertice, adyacente, peso = 1):
+    def agregarArista(self, vertice, adyacente, peso):
 
-        if vertice not in self.vertices:
+        if not self.verticePertenece(vertice) or not self.verticePertenece(adyacente):
             return False
 
         if not self.dirigido:
-            self.vertices[adyacente][vertice] = peso
+            diccionario_a = self.vertices[adyacente][1]
+            diccionario_a[vertice] = peso
 
-        self.vertices[vertice][adyacente] = peso
+        diccionario_v = self.vertices[vertice][1]
+        diccionario_v[adyacente] = peso
         return True
 
     def obtenerPeso(self, vertice, adyacente):
 
         if vertice not in self.vertices:
-            return -1
+            return None
 
-        return self.vertices[vertice].get(adyacente, -1)
+        return self.vertices[vertice][1].get(adyacente, None)
 
     def obtenerAdyacentes(self,vertice):
-        return list(self.vertices[vertice])
+        return list(self.vertices[vertice][1])
 
     def verticePertenece(self,vertice):
         return vertice in self.vertices
+
+    def obtenerDatos(self,vertice):
+        if not self.verticePertenece(vertice): return None
+        return self.vertices[vertice][0]
 
     def __iter__(self):
         return iter(self.vertices)
@@ -71,7 +77,7 @@ def cmp(a,b):
     return (a>b) - (a<b)
 
 
-def DIJKSTRA(grafo, origen):
+def DIJKSTRA(grafo, origen, cmp_dijkstra):
 
     if not grafo.verticePertenece(origen): return None,None
 
@@ -84,7 +90,7 @@ def DIJKSTRA(grafo, origen):
     distancia[origen] = 0
     padre[origen] = None
 
-    heap = Heap(cmp)
+    heap = Heap(cmp_dijkstra)
 
     heap.encolar([origen,distancia[origen]])
 
@@ -161,7 +167,7 @@ def orden_topologico(grafo):
 
 def PRIM(grafo,origen,cmp_prim):
     visitados = {}
-    visitados.[origen] = origen
+    visitados[origen] = origen
     heap = heap(cmp_prim)
 
     for adyacente in grafo.obtenerAdyacentes(origen):
@@ -177,7 +183,7 @@ def PRIM(grafo,origen,cmp_prim):
         if adyacente in visitados: continue
 
         arbol.agregarArista(vertice, adyacente, grafo.obtenerPeso(vertice, adyacente))
-        visitados.[adyacente] = adyacente
+        visitados[adyacente] = adyacente
 
         for w in grafo.obtenerAdyacentes(adyacente):
             heap.encolar( [adyacente, w, grafo.obtenerPeso(adyacente, w)] )
