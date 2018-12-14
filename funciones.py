@@ -49,6 +49,12 @@ def camino_mas_rapido(origen,destino,grafo,cmp_rapidez):
 	caminoMasRapido.reverse()
 	return caminoMasRapido
 
+def mostrarCamino(camino):
+	for aeropuerto in range(len(camino)-1):
+		print("{} -> ".format(camino[aeropuerto]),end = "")
+	print(camino[-1])
+
+
 def f_camino_mas(l_comando,grafo,cmp_costos,cmp_rapidez):
 	if len(l_comando) != 2: return False
 	parametros = l_comando[pos_parametros].split(',')
@@ -56,8 +62,14 @@ def f_camino_mas(l_comando,grafo,cmp_costos,cmp_rapidez):
 	modo = 0
 	origen = 1
 	destino = 2
-	if parametros[modo] == "barato":  return camino_mas_barato(parametros[origen],parametros[destino],grafo,cmp_costos)
-	if pos_parametros[modo] == "rapido": return camino_mas_rapido(parametros[origen],pos_parametros[destino],grafo,cmp_rapidez)
+	if parametros[modo] == "barato":
+		camino = camino_mas_barato(parametros[origen],parametros[destino],grafo,cmp_costos)
+		mostrarCamino(camino)
+		return
+	if pos_parametros[modo] == "rapido":
+		camino = camino_mas_rapido(parametros[origen],pos_parametros[destino],grafo,cmp_rapidez)
+		mostrarCamino(camino)
+		return
 	return False
 
 def f_camino_escalas(l_comando,grafo):
