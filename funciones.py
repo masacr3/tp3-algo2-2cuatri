@@ -40,15 +40,15 @@ def camino_mas_barato(origen,destino,grafo):
 	return caminoMasBarato
 
 def camino_mas_rapido(origen,destino,grafo):
-	padre, costoVuelo = DIJKSTRA(grafo,origen,cmp_rapidez)
+	padre, rapidezVuelo = DIJKSTRA(grafo,origen,cmp_rapidez)
 
-	caminoMasBarato = []
+	caminoMasRapido = []
 	while destino != None:
-		caminoMasBarato.append(destino)
+		caminoMasRapido.append(destino)
 		destino = padre[destino]
 
-	caminoMasBarato.reverse()
-	return caminoMasBarato
+	caminoMasRapido.reverse()
+	return caminoMasRapido
 
 def f_camino_mas(l_comando,grafo):
 	if len(l_comando) != 2: return False
