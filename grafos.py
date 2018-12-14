@@ -77,7 +77,7 @@ def cmp(a,b):
     return (a>b) - (a<b)
 
 
-def DIJKSTRA(grafo, origen):
+def DIJKSTRA(grafo, origen, cmp_dijkstra):
 
     if not grafo.verticePertenece(origen): return None,None
 
@@ -90,7 +90,7 @@ def DIJKSTRA(grafo, origen):
     distancia[origen] = 0
     padre[origen] = None
 
-    heap = Heap(cmp)
+    heap = Heap(cmp_dijkstra)
 
     heap.encolar([origen,distancia[origen]])
 
