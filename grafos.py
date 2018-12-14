@@ -13,13 +13,15 @@ class Grafo:
 
     def agregarArista(self, vertice, adyacente, peso):
 
-        if vertice not in self.vertices and adyacente not in self.vertices:
+        if not self.verticePertenece(vertice) or not self.verticePertenece(adyacente):
             return False
 
         if not self.dirigido:
-            self.vertices[adyacente][1][vertice] = peso
+            diccionario_a = self.vertices[adyacente][1]
+            diccionario_a[vertice] = peso
 
-        self.vertices[vertice][1][adyacente] = peso
+        diccionario_v = self.vertices[vertice][1]
+        diccionario_v[adyacente] = peso
         return True
 
     def obtenerPeso(self, vertice, adyacente):
@@ -34,6 +36,10 @@ class Grafo:
 
     def verticePertenece(self,vertice):
         return vertice in self.vertices
+
+    def obtenerDatos(self,vertice):
+        if not self.verticePertenece(vertice): return None
+        return self.vertices[vertice][0]
 
     def __iter__(self):
         return iter(self.vertices)
@@ -71,7 +77,7 @@ def cmp(a,b):
     return (a>b) - (a<b)
 
 
-def DIJKSTRA(grafo, origen, cmp_dijkstra):
+def DIJKSTRA(grafo, origen):
 
     if not grafo.verticePertenece(origen): return None,None
 
@@ -84,7 +90,7 @@ def DIJKSTRA(grafo, origen, cmp_dijkstra):
     distancia[origen] = 0
     padre[origen] = None
 
-    heap = Heap(cmp_dijkstra)
+    heap = Heap(cmp)
 
     heap.encolar([origen,distancia[origen]])
 

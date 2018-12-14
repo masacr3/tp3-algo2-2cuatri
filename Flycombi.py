@@ -4,6 +4,7 @@ from funciones import *
 import csv
 import argparse
 import sys
+from pruebas import *
 
 ciudad = 0
 codigo_aeropuerto = 1
@@ -36,8 +37,10 @@ def main():
     with open(nombre_arch_vuelos) as csv_file:
         datos_vuelos = csv.reader(csv_file,delimiter=',')
         for registro in datos_vuelos:
-            if grafo.verticePertenece(registro[aeropuerto_i]) and grafo.verticePertenece(registro[aeropuerto_j]):
-                grafo.agregarArista(aeropuerto_i,aeropuerto_j,registro)
+            if grafo.agregarArista(registro[aeropuerto_i],registro[aeropuerto_j],registro): continue
+            print("No agrego arista "+registro[aeropuerto_i]+"-"+registro[aeropuerto_j])
+
+    pruebas_grafo(grafo)
     try:
         linea_comando = input()
     except EOFError: 
@@ -50,7 +53,7 @@ def main():
         try:
             linea_comando = input()
         except EOFError:
-        	break
+            break
 
 
 
