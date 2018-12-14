@@ -7,30 +7,30 @@ class Grafo:
         self.cantidad = 0
         self.dirigido = dirigido
 
-    def agregarVertice(self, vertice):
-        self.vertices[vertice] = {} #aca van los adyacentes
+    def agregarVertice(self, vertice, dato):
+        self.vertices[vertice] = (dato,{}) #aca van los adyacentes
         self.cantidad += 1
 
-    def agregarArista(self, vertice, adyacente, peso = 1):
+    def agregarArista(self, vertice, adyacente, peso):
 
         if vertice not in self.vertices:
             return False
 
         if not self.dirigido:
-            self.vertices[adyacente][vertice] = peso
+            self.vertices[adyacente][1][vertice] = peso
 
-        self.vertices[vertice][adyacente] = peso
+        self.vertices[vertice][1][adyacente] = peso
         return True
 
     def obtenerPeso(self, vertice, adyacente):
 
         if vertice not in self.vertices:
-            return -1
+            return None
 
-        return self.vertices[vertice].get(adyacente, -1)
+        return self.vertices[vertice][1].get(adyacente, None)
 
     def obtenerAdyacentes(self,vertice):
-        return list(self.vertices[vertice])
+        return list(self.vertices[vertice][1])
 
     def verticePertenece(self,vertice):
         return vertice in self.vertices
@@ -161,7 +161,7 @@ def orden_topologico(grafo):
 
 def PRIM(grafo,origen,cmp_prim):
     visitados = {}
-    visitados.[origen] = origen
+    visitados[origen] = origen
     heap = heap(cmp_prim)
 
     for adyacente in grafo.obtenerAdyacentes(origen):
@@ -177,7 +177,7 @@ def PRIM(grafo,origen,cmp_prim):
         if adyacente in visitados: continue
 
         arbol.agregarArista(vertice, adyacente, grafo.obtenerPeso(vertice, adyacente))
-        visitados.[adyacente] = adyacente
+        visitados[adyacente] = adyacente
 
         for w in grafo.obtenerAdyacentes(adyacente):
             heap.encolar( [adyacente, w, grafo.obtenerPeso(adyacente, w)] )
