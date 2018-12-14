@@ -13,7 +13,7 @@ class Grafo:
 
     def agregarArista(self, vertice, adyacente, peso):
 
-        if vertice not in self.vertices:
+        if vertice not in self.vertices and adyacente not in self.vertices:
             return False
 
         if not self.dirigido:
