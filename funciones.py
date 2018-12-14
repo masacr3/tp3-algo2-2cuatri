@@ -27,16 +27,37 @@ tiempo_promedio = 2
 precio = 3
 cant_vuelos_entre_aeropuertos = 4
 
+def camino_mas_barato(origen,destino,grafo,cmp_costos):
+	padre, costoVuelo = DIJKSTRA(grafo,origen,cmp_costos)
 
-def f_camino_mas(l_comando,grafo):
+	caminoMasBarato = []
+	while destino != None:
+		caminoMasBarato.append(destino)
+		destino = padre[destino]
+
+	caminoMasBarato.reverse()
+	return caminoMasBarato
+
+def camino_mas_rapido(origen,destino,grafo,cmp_rapidez):
+	padre, rapidezVuelo = DIJKSTRA(grafo,origen,cmp_rapidez)
+
+	caminoMasRapido = []
+	while destino != None:
+		caminoMasRapido.append(destino)
+		destino = padre[destino]
+
+	caminoMasRapido.reverse()
+	return caminoMasRapido
+
+def f_camino_mas(l_comando,grafo,cmp_costos,cmp_rapidez):
 	if len(l_comando) != 2: return False
 	parametros = l_comando[pos_parametros].split(',')
 	if len(parametros) != 3: return False
 	modo = 0
 	origen = 1
 	destino = 2
-	if parametros[modo] == "barato":  return camino_mas_barato(parametros[origen],parametros[destino],grafo)
-	if pos_parametros[modo] == "rapido": return camino_mas_rapido(parametros[origen],pos_parametros[destino],grafo)
+	if parametros[modo] == "barato":  return camino_mas_barato(parametros[origen],parametros[destino],grafo,cmp_costos)
+	if pos_parametros[modo] == "rapido": return camino_mas_rapido(parametros[origen],pos_parametros[destino],grafo,cmp_rapidez)
 	return False
 
 def f_camino_escalas(l_comando,grafo):
@@ -50,7 +71,7 @@ def f_camino_escalas(l_comando,grafo):
 
 def f_centralidad(l_comando,grafo):
 	if len(l_comando) != 2: return False
-	
+
 	return True
 
 def f_pagerank(l_comando,grafo):
