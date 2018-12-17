@@ -81,21 +81,18 @@ def mostrarCamino(camino):
 def f_camino_mas(parametros,grafo,dic_ciudades):
 
     if len(parametros) != 3: return False
-    modo = 0
-    origen = 1
-    destino = 2
 
-    if parametros[modo] == "barato":
-        camino = _camino_mas(parametros[origen],parametros[destino],grafo,f_cmp_precio,dic_ciudades)
-        mostrarCamino(camino)
-        return True
+    modo = parametros[0]
 
-    if parametros[modo] == "rapido":
-        camino = _camino_mas(parametros[origen],parametros[destino],grafo,f_cmp_tiempo,dic_ciudades)
-        mostrarCamino(camino)
-        return True
+    if modo not in ["barato","rapido"]: return False
 
-    return False
+    origen = parametros[1]
+    destino = parametros[2]
+
+    camino = _camino_mas(origen,destino,grafo,f_cmp_precio if modo == "barato" else f_cmp_tiempo,dic_ciudades)
+    mostrarCamino(camino)
+    
+    return True
 
 def f_camino_escalas(l_comando,grafo):
 	if len(l_comando) != 2: return False
