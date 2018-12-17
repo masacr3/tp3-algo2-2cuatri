@@ -55,7 +55,7 @@ def _camino_mas(origen,destino,grafo,f_cmp,peso,dic_aeropuertos):
     for aeropuerto_destino in dic_aeropuertos[destino]:
 
         for padre,distancia in caminos:
-            
+
             if distancia[aeropuerto_destino] < distancia_actual:
                 padreActual = padre
                 destinoActual = aeropuerto_destino
@@ -93,14 +93,18 @@ def f_camino_mas(parametros,grafo,dic_ciudades):
 
     return True
 
-def f_camino_escalas(l_comando,grafo):
-	if len(l_comando) != 2: return False
-	parametros = l_comando[pos_parametros].split(',')
-	if len(parametros) != 2: return False
-	origen = 0
-	destino = 1
 
-	return True
+def _camino_escalas(origen,destino,grafo,f_cmp,index,dic_aeropuertos):
+    """ no sirve disjstra si lees esto gaby programa BFS leo 8:20 de la mañana """
+
+def f_camino_escalas(parametros,grafo,dic_ciudades):
+    print(parametros)
+    origen = parametros[0][15:]
+    destino = parametros[1]
+    camino = _camino_escalas(origen,destino,grafo,f_cmp_heap,2,dic_ciudades)
+    mostrarCamino(camino)
+
+    return True
 
 def f_centralidad(l_comando,grafo):
 	if len(l_comando) != 2: return False
@@ -143,7 +147,7 @@ def ejecutar_operacion(comando,parametros,grafo,dic_ciudades):
     if not comando: return False
     if comando == listar_operaciones: return f_listar_operaciones()
     if comando == camino_mas: return f_camino_mas(parametros,grafo,dic_ciudades)
-    if comando == camino_escalas: return f_camino_escalas(parametros,grafo)
+    if comando == camino_escalas: return f_camino_escalas(parametros,grafo,dic_ciudades)
     if comando == centralidad: return f_centralidad(parametros,grafo)
     if comando == pagerank: return f_pagerank(parametros,grafo)
     if comando == nueva_aerolinea: return f_nueva_aerolinea(parametros,grafo)
