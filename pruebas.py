@@ -25,6 +25,11 @@ def pruebas_grafo(grafo):
 	print("Adyacentes JFK: ", adyacentes_esperados)
 	print("Adyacentes obtenidos: ", adyacentes_obtenidos)
 
+def pruebas_dic_ciudades(dic_ciudades):
+	for ciudad in dic_ciudades:
+		print(ciudad,end = ":")
+		print(dic_ciudades[ciudad])
+
 def pruebas_cmp(grafo):
 	peso1 = grafo.obtenerPeso("SHE","RIV")
 	peso2 = grafo.obtenerPeso("ATL","RIV")

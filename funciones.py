@@ -1,5 +1,8 @@
 from grafos import *
 from biblioteca import *
+from f_comparacion import *
+import sys
+import csv
 
 camino_mas = "camino_mas"
 camino_escalas = "camino_escalas"
@@ -28,19 +31,24 @@ tiempo_promedio = 2
 precio = 3
 cant_vuelos_entre_aeropuertos = 4
 
-def camino_mas_barato(origen,destino,grafo,cmp_costos):
-	padre, costoVuelo = DIJKSTRA(grafo,origen,cmp_costos)
+def cargar_flycombi(grafo,aeropuertos,vuelos,dic_ciudades):
+    with open(aeropuertos) as csv_file:
+        datos_aeropuertos = csv.reader(csv_file,delimiter=',')
+        for registro in datos_aeropuertos:
+            grafo.agregarVertice(registro[codigo_aeropuerto],registro)
+            if not registro[ciudad] in dic_ciudades:
+            	dic_ciudades[registro[ciudad]] = []
+            dic_ciudades[registro[ciudad]].append(registro[codigo_aeropuerto])
 
-	caminoMasBarato = []
-	while destino != None:
-		caminoMasBarato.append(destino)
-		destino = padre[destino]
+    with open(vuelos) as csv_file:
+        datos_vuelos = csv.reader(csv_file,delimiter=',')
+        for registro in datos_vuelos:
+            grafo.agregarArista(registro[aeropuerto_i],registro[aeropuerto_j],registro)
 
-	caminoMasBarato.reverse()
-	return caminoMasBarato
 
-def camino_mas_rapido(origen,destino,grafo,cmp_rapidez):
-	padre, rapidezVuelo = DIJKSTRA(grafo,origen,cmp_rapidez)
+def _camino_mas(origen,destino,grafo,f_cmp,dic_ciudades):
+	for aeropuerto in dic_ciudades[origen]:
+		padre, rapidezVuelo = DIJKSTRA(grafo,origen,f_cmp)
 
 	caminoMasRapido = []
 	while destino != None:
@@ -52,27 +60,22 @@ def camino_mas_rapido(origen,destino,grafo,cmp_rapidez):
 
 def mostrarCamino(camino):
 	for aeropuerto in range(len(camino)-1):
-		print("{} -> ".format(camino[aeropuerto]),end = "")
+		print("{} -> ".format(camino[aeropuerto]), end = " ")
 	print(camino[-1])
 
-def f_camino_mas(l_comando,grafo):
-	if len(l_comando) != 2:
-		print("len->",len(l_comando),l_comando)
-		print("1")
-		return False
-	parametros = l_comando[pos_parametros].split(',')
-	if len(parametros) != 3:
-		print("2")
-		return False
+def f_camino_mas(parametros,grafo,dic_ciudades):
+	print(len(parametros))
+	if len(parametros) != 3: return False
 	modo = 0
 	origen = 1
 	destino = 2
+	print(parametros[modo])
 	if parametros[modo] == "barato":
-		camino = camino_mas_barato(parametros[origen],parametros[destino],grafo,f_cmp_precio)
+		camino = _camino_mas(parametros[origen],parametros[destino],grafo,f_cmp_precio,dic_ciudades)
 		mostrarCamino(camino)
 		return True
-	if pos_parametros[modo] == "rapido":
-		camino = camino_mas_rapido(parametros[origen],pos_parametros[destino],grafo,f_cmp_tiempo)
+	if parametros[modo] == "rapido":
+		camino = _camino_mas(parametros[origen],parametros[destino],grafo,f_cmp_tiempo,dic_ciudades)
 		mostrarCamino(camino)
 		return True
 	return False
@@ -123,19 +126,20 @@ def f_listar_operaciones():
     return True
 
 
-def ejecutar_operacion(l_comando,grafo):
-    if not l_comando: return False
-    comando = l_comando[0]
+def ejecutar_operacion(comando,parametros,grafo,dic_ciudades):
+    if not comando: return False
+    print(camino_mas)
+    print(comando)
     if comando == listar_operaciones: return f_listar_operaciones()
-    if comando == camino_mas: return f_camino_mas(l_comando,grafo)
-    if comando == camino_escalas: return f_camino_escalas(l_comando,grafo)
-    if comando == centralidad: return f_centralidad(l_comando,grafo)
-    if comando == pagerank: return f_pagerank(l_comando,grafo)
-    if comando == nueva_aerolinea: return f_nueva_aerolinea(l_comando,grafo)
-    if comando == recorrer_mundo: return f_recorrer_mundo(l_comando,grafo)
-    if comando == recorrer_mundo_aprox: return f_recorrer_mundo_aprox(l_comando,grafo)
-    if comando == vacaciones: return f_vacaciones(l_comando,grafo)
-    if comando == itinerario: return f_itinerario(l_comando,grafo)
-    if comando == exportar_kml: return f_exportar_kml(l_comando,grafo)
+    if comando == camino_mas: return f_camino_mas(parametros,grafo,dic_ciudades)
+    if comando == camino_escalas: return f_camino_escalas(parametros,grafo)
+    if comando == centralidad: return f_centralidad(parametros,grafo)
+    if comando == pagerank: return f_pagerank(parametros,grafo)
+    if comando == nueva_aerolinea: return f_nueva_aerolinea(parametros,grafo)
+    if comando == recorrer_mundo: return f_recorrer_mundo(parametros,grafo)
+    if comando == recorrer_mundo_aprox: return f_recorrer_mundo_aprox(parametros,grafo)
+    if comando == vacaciones: return f_vacaciones(parametros,grafo)
+    if comando == itinerario: return f_itinerario(parametros,grafo)
+    if comando == exportar_kml: return f_exportar_kml(parametros,grafo)
 
     return False

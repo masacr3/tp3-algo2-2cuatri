@@ -29,17 +29,10 @@ def main():
     nombre_arch_vuelos = args.vuelos
 
     grafo = Grafo()
+    dic_ciudades = {} #Cada clave es una ciudad, con sus respectivos aeropuertos
 
-    with open(nombre_arch_aeropuertos) as csv_file:
-        datos_aeropuertos = csv.reader(csv_file,delimiter=',')
-        for registro in datos_aeropuertos:
-            grafo.agregarVertice(registro[codigo_aeropuerto],registro)
-
-    with open(nombre_arch_vuelos) as csv_file:
-        datos_vuelos = csv.reader(csv_file,delimiter=',')
-        for registro in datos_vuelos:
-            if grafo.agregarArista(registro[aeropuerto_i],registro[aeropuerto_j],registro): continue
-            print("No agrego arista "+registro[aeropuerto_i]+"-"+registro[aeropuerto_j])
+    cargar_flycombi(grafo,nombre_arch_aeropuertos,nombre_arch_vuelos,dic_ciudades)
+    pruebas_dic_ciudades(dic_ciudades)
 
     try:
         linea_comando = input()
@@ -47,8 +40,12 @@ def main():
     	print("No hay comandos de entrada")
 
     while(linea_comando):
-        comando_parametros = linea_comando.split(" ")
-        if not ejecutar_operacion(comando_parametros,grafo):
+        comando_parametros = linea_comando.split(",")
+        comando = comando_parametros[0].split(" ")
+        if(len(comando)==2): comando_parametros[0] = comando[1]
+        print(comando[0])
+        print(comando_parametros)
+        if not ejecutar_operacion(comando[0],comando_parametros,grafo):
             print("Ups")
         else:
             print("Ok")
