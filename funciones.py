@@ -55,8 +55,7 @@ def _camino_mas(origen,destino,grafo,f_cmp,peso,dic_aeropuertos):
     for aeropuerto_destino in dic_aeropuertos[destino]:
 
         for padre,distancia in caminos:
-            print("distancia actual",distancia_actual)
-            print("distancia aero  ",distancia[aeropuerto_destino])
+            
             if distancia[aeropuerto_destino] < distancia_actual:
                 padreActual = padre
                 destinoActual = aeropuerto_destino
