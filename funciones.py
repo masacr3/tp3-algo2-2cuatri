@@ -40,7 +40,7 @@ def cargar_flycombi(grafo,aeropuertos,vuelos,h):
             grafo.agregarArista(cod_aeropuerto_i, cod_aeropuerto_j, [int(t_promedio), int(precio), int(cant_vuelos)])
 
 
-def _camino_mas(origen,destino,grafo,f_cmp,dic_aeropuertos):
+def _camino_mas(origen,destino,grafo,f_cmp,peso,dic_aeropuertos):
     caminos = []
     distancia_actual = INFINITO
 
@@ -48,14 +48,15 @@ def _camino_mas(origen,destino,grafo,f_cmp,dic_aeropuertos):
     destinoActual = None
 
     for aeropuerto_partida in dic_aeropuertos[origen]:
-        padre, distancia = DIJKSTRA(grafo , aeropuerto_partida, f_cmp)
+        padre, distancia = DIJKSTRA(grafo , aeropuerto_partida, f_cmp, peso)
         if padre != None:
             caminos.append([padre,distancia])
 
     for aeropuerto_destino in dic_aeropuertos[destino]:
 
         for padre,distancia in caminos:
-
+            print("distancia actual",distancia_actual)
+            print("distancia aero  ",distancia[aeropuerto_destino])
             if distancia[aeropuerto_destino] < distancia_actual:
                 padreActual = padre
                 destinoActual = aeropuerto_destino
@@ -88,7 +89,7 @@ def f_camino_mas(parametros,grafo,dic_ciudades):
     origen = parametros[1]
     destino = parametros[2]
 
-    camino = _camino_mas(origen,destino,grafo,f_cmp_precio if modo == "barato" else f_cmp_tiempo,dic_ciudades)
+    camino = _camino_mas(origen,destino,grafo,f_cmp_heap,0 if modo == "rapido" else 1,dic_ciudades)
     mostrarCamino(camino)
 
     return True
