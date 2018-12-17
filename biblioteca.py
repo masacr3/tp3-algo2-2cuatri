@@ -6,6 +6,7 @@
 # ? CENTRALIDAD(grafo)
 
 from grafos import *
+from colas import *
 
 def dfs(grafo, v, visitados, padres, orden):
 
@@ -21,15 +22,49 @@ def dfs(grafo, v, visitados, padres, orden):
 
 def DFS(grafo, origen):
     visitados = {}
-    padres = {}
+    padre = {}
     orden = {}
 
-    padres[origen] = None
+    padre[origen] = None
     orden[origen] = 0
 
-    dfs(grafo, origen, visitados, padres, orden)
+    dfs(grafo, origen, visitados, padre, orden)
 
     return padres, orden
+
+def BFS(grafo, origen):
+
+    if origen not in grafo: return None, None
+
+    visitados = {}
+    padre = {}
+    orden = {}
+
+    padre[origen] = None
+    orden[origen] = 0
+    visitados[origen] = origen
+
+    q = Cola()
+
+    q.encolar(origen)
+
+    while not q.esta_vacia():
+        v = q.desencolar()
+
+        for w in grafo.obtenerAdyacentes(v):
+
+            if w not in visitados:
+                visitados[w] = w
+                padre[w] = v
+                orden[w] = orden[v] + 1
+                q.encolar(w)
+
+    return padre, orden
+
+def mostrarCamino(camino):
+	for i in range(len(camino)-1):
+		print("{} -> ".format(camino[i]), end = "")
+	print(camino[-1])
 
 
 INFINITO = 9999999 #simulamos un numero gigante

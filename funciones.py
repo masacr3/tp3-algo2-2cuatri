@@ -72,11 +72,6 @@ def _camino_mas(origen,destino,grafo,f_cmp,peso,dic_aeropuertos):
     caminoMas.reverse()
     return caminoMas
 
-def mostrarCamino(camino):
-	for aeropuerto in range(len(camino)-1):
-		print("{} -> ".format(camino[aeropuerto]), end = "")
-	print(camino[-1])
-
 def f_camino_mas(parametros,grafo,dic_ciudades):
 
     if len(parametros) != 3: return False
@@ -95,10 +90,37 @@ def f_camino_mas(parametros,grafo,dic_ciudades):
 
 
 def _camino_escalas(origen,destino,grafo,f_cmp,index,dic_aeropuertos):
-    """ no sirve disjstra si lees esto gaby programa BFS leo 8:20 de la mañana """
+    caminos = []
+    orden_actual = INFINITO
+    padreActual = {}
+    destinoActual = None
+
+    for aeropuerto_partida in dic_aeropuertos[origen]:
+        padre, orden = BFS(grafo , aeropuerto_partida)
+        if padre != None:
+            caminos.append([padre,orden])
+
+    for aeropuerto_destino in dic_aeropuertos[destino]:
+        for padre,orden in caminos:
+            if orden[aeropuerto_destino] < orden_actual:
+                padreActual = padre
+                destinoActual = aeropuerto_destino
+                orden_actual = orden[aeropuerto_destino]
+
+
+    actual = destinoActual
+
+    camino = []
+    while actual != None:
+        camino.append(actual)
+        actual = padre[actual]
+
+    camino.reverse()
+
+    return camino
+
 
 def f_camino_escalas(parametros,grafo,dic_ciudades):
-    print(parametros)
     origen = parametros[0][15:]
     destino = parametros[1]
     camino = _camino_escalas(origen,destino,grafo,f_cmp_heap,2,dic_ciudades)

@@ -22,6 +22,7 @@ def main ():
     g.agregarArista(a,f,8)
 
     g.agregarArista(b,c,2)
+    g.agregarArista(b,d,1)
 
     g.agregarArista(c,d,1)
     g.agregarArista(c,f,1)
@@ -31,72 +32,20 @@ def main ():
 
     g.agregarArista(e,f,2)
 
-    padres, distancia = DIJKSTRA(g, "a")
+    padre , orden = BFS(g,a)
 
-    print("Dijkstra A:")
-    print("padres: ",padres)
-    print("distancia: ",distancia)
+    actual = c
+    camino = []
+    camino2 = [a,d]
 
-    padres, distancia = DIJKSTRA(g, "b")
+    while actual != None:
+        camino.append(actual)
+        actual = padre[actual]
 
-    print("Dijkstra B:")
-    print("padres: ",padres)
-    print("distancia: ",distancia)
+    camino.reverse()
 
-    padres, distancia = DIJKSTRA(g, "c")
+    mostrarCamino(camino)
+    mostrarCamino(camino2)
 
-    print("Dijkstra C:")
-    print("padres: ",padres)
-    print("distancia: ",distancia)
-
-    padres, distancia = DIJKSTRA(g, "d")
-
-    print("Dijkstra D:")
-    print("padres: ",padres)
-    print("distancia: ",distancia)
-
-    padres, distancia = DIJKSTRA(g, "e")
-
-    print("Dijkstra E:")
-    print("padres: ",padres)
-    print("distancia: ",distancia)
-
-    padres, distancia = DIJKSTRA(g, "f")
-
-    print("Dijkstra F:")
-    print("padres: ",padres)
-    print("distancia: ",distancia)
-
-    padres, distancia = DIJKSTRA(g, "g")
-
-    print("Dijkstra G:")
-    print("padres: ",padres)
-    print("distancia: ",distancia)
-
-    print("centralidad grafo1: ",centralidad(g))
-
-    g2 = Grafo(True)
-
-    vertices = ["a","b","c","d","e","f","h"]
-
-    a = "a"
-    b = "b"
-    c = "c"
-    d = "d"
-    e = "e"
-    f = "f"
-    h = "h"
-
-    for vertice in vertices:
-        g2.agregarVertice(vertice)
-
-    g2.agregarArista(b,a,1)
-    g2.agregarArista(a,c,2)
-    g2.agregarArista(d,a,2)
-    g2.agregarArista(a,f,1)
-    g2.agregarArista(e,f,3)
-    g2.agregarArista(f,h,2)
-
-    print("centralidad grafo 2: ",centralidad(g2))
 
 main()
