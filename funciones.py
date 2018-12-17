@@ -31,32 +31,54 @@ tiempo_promedio = 2
 precio = 3
 cant_vuelos_entre_aeropuertos = 4
 
-def cargar_flycombi(grafo,aeropuertos,vuelos,dic_ciudades):
-    with open(aeropuertos) as csv_file:
-        datos_aeropuertos = csv.reader(csv_file,delimiter=',')
-        for registro in datos_aeropuertos:
-            grafo.agregarVertice(registro[codigo_aeropuerto],registro)
-            if not registro[ciudad] in dic_ciudades:
-            	dic_ciudades[registro[ciudad]] = []
-            dic_ciudades[registro[ciudad]].append(registro[codigo_aeropuerto])
+def cargar_flycombi(grafo,aeropuertos,vuelos,dic_aeropuertos):
+    i = 0
+    with open(aeropuertos) as lista_aeropuertos:
+        for aeropuerto in lista_aeropuertos:
+            print(i)
+            i += 1
+            ciudad,codigo_aeropuerto,latitud,longitud = aeropuerto.rstrip('\n').split(",")
 
-    with open(vuelos) as csv_file:
-        datos_vuelos = csv.reader(csv_file,delimiter=',')
-        for registro in datos_vuelos:
-            grafo.agregarArista(registro[aeropuerto_i],registro[aeropuerto_j],registro)
+            dic_aeropuertos[ciudad][codigo_aeropuerto] = [float(latitud),float(longitud)]
+
+    with open(vuelos) as lista_vuelos:
+        for vuelo in lista_vuelos:
+            cod_aeropuerto_i,cod_aeropuerto_j, t_promedio, precio, cant_vuelos = vuelo.rstrip('\n').split(",")
+            grafo.agregarArista(cod_aeropuerto_i, cod_aeropuerto_j, t_promedio, precio, cant_vuelos)
 
 
-def _camino_mas(origen,destino,grafo,f_cmp,dic_ciudades):
-	for aeropuerto in dic_ciudades[origen]:
-		padre, rapidezVuelo = DIJKSTRA(grafo,origen,f_cmp)
+def _camino_mas(origen,destino,grafo,f_cmp,dic_aeropuertos):
+    caminos = []
+    distancia_actual = INFINITO
 
-	caminoMasRapido = []
-	while destino != None:
-		caminoMasRapido.append(destino)
-		destino = padre[destino]
+    padreActual = {}
+    distanciaActual = {}
+    destinoActual = ""
 
-	caminoMasRapido.reverse()
-	return caminoMasRapido
+    for aeropuerto_partida in dic_aeropuertos[origen]:
+        padre, distancia = DIJKSTRA(grafo , aeropuerto_partida, f_cmp)
+
+        caminos.append([padre,distacia])
+
+    for aeropuerto_destino in dic_aeropuertos[destino]:
+
+        for padre,distacia in caminos:
+
+            if distacia[aeropuerto_destino] < distancia_Actual:
+                padreActual = padre
+                distaciaActual = distacia
+                distancia_actual = distancia[aeropuerto_destino]
+                destinoActual = aeropuerto_destino
+
+    caminoMasRapido = []
+    actual = destinoActual
+
+    while actual != None:
+        caminoMasRapido.append(actual)
+        actual = padreActual[actual]
+
+    caminoMasRapido.reverse()
+    return caminoMasRapido
 
 def mostrarCamino(camino):
 	for aeropuerto in range(len(camino)-1):

@@ -29,10 +29,10 @@ def main():
     nombre_arch_vuelos = args.vuelos
 
     grafo = Grafo()
-    dic_ciudades = {} #Cada clave es una ciudad, con sus respectivos aeropuertos
+    dic_aeropuertos = {} #Cada clave es una ciudad, con sus respectivos aeropuertos
 
-    cargar_flycombi(grafo,nombre_arch_aeropuertos,nombre_arch_vuelos,dic_ciudades)
-    pruebas_dic_ciudades(dic_ciudades)
+    cargar_flycombi(grafo,nombre_arch_aeropuertos,nombre_arch_vuelos,dic_aeropuertos)
+    pruebas_dic_aeropuertos(dic_aeropuertos)
 
     try:
         linea_comando = input()

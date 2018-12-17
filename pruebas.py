@@ -25,10 +25,11 @@ def pruebas_grafo(grafo):
 	print("Adyacentes JFK: ", adyacentes_esperados)
 	print("Adyacentes obtenidos: ", adyacentes_obtenidos)
 
-def pruebas_dic_ciudades(dic_ciudades):
-	for ciudad in dic_ciudades:
-		print(ciudad,end = ":")
-		print(dic_ciudades[ciudad])
+def pruebas_dic_aeropuertos(ciudades):
+	for ciudad in cuidades:
+		for aeropuerto in cuidad:
+
+			print(ciudad,aeropuerto,cuidades[ciudad][aeropuerto])
 
 def pruebas_cmp(grafo):
 	peso1 = grafo.obtenerPeso("SHE","RIV")
@@ -36,7 +37,3 @@ def pruebas_cmp(grafo):
 	if f_cmp_tiempo(peso1,peso2) < 0: print("peso1 menor a peso2")
 	if f_cmp_precio(peso1,peso2) < 0: print("precio1 menor a precio2")
 	if f_cmp_escalas(peso1,peso2) > 0: print("escala1 mayor a escala2")
-	
-
-
-
