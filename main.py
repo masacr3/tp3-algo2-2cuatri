@@ -1,4 +1,5 @@
 from grafos import *
+from biblioteca import *
 
 def main ():
     g = Grafo(True)
