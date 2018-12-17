@@ -45,8 +45,7 @@ def _camino_mas(origen,destino,grafo,f_cmp,dic_aeropuertos):
     distancia_actual = INFINITO
 
     padreActual = {}
-    distanciaActual = {}
-    destinoActual = ""
+    destinoActual = None
 
     for aeropuerto_partida in dic_aeropuertos[origen]:
         padre, distancia = DIJKSTRA(grafo , aeropuerto_partida, f_cmp)
@@ -59,19 +58,19 @@ def _camino_mas(origen,destino,grafo,f_cmp,dic_aeropuertos):
 
             if distancia[aeropuerto_destino] < distancia_actual:
                 padreActual = padre
-                distaciaActual = distancia
-                distancia_actual = distancia[aeropuerto_destino]
                 destinoActual = aeropuerto_destino
+                distancia_actual = distancia[aeropuerto_destino]
 
-    caminoMasRapido = []
+
+    caminoMas = []
     actual = destinoActual
 
     while actual != None:
-        caminoMasRapido.append(actual)
+        caminoMas.append(actual)
         actual = padreActual[actual]
 
-    caminoMasRapido.reverse()
-    return caminoMasRapido
+    caminoMas.reverse()
+    return caminoMas
 
 def mostrarCamino(camino):
 	for aeropuerto in range(len(camino)-1):
@@ -91,7 +90,7 @@ def f_camino_mas(parametros,grafo,dic_ciudades):
 
     camino = _camino_mas(origen,destino,grafo,f_cmp_precio if modo == "barato" else f_cmp_tiempo,dic_ciudades)
     mostrarCamino(camino)
-    
+
     return True
 
 def f_camino_escalas(l_comando,grafo):
