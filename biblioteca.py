@@ -40,7 +40,8 @@ def cmp(a,b):
 
 def DIJKSTRA(grafo, origen, cmp_dijkstra):
 
-    if not grafo.verticePertenece(origen): return None,None
+    if origen not in grafo:
+        return None,None
 
     padre = {}
     distancia = {}
@@ -59,13 +60,15 @@ def DIJKSTRA(grafo, origen, cmp_dijkstra):
         vertice , peso = heap.desencolar()
 
         for adyacente in grafo.obtenerAdyacentes(vertice):
-            distanciaActual = distancia[vertice] + grafo.obtenerPeso(vertice, adyacente)
+            distanciaActual = distancia[vertice] + grafo.obtenerPeso(vertice, adyacente)[1]
 
             if distanciaActual < distancia[adyacente]:
+
                 padre[adyacente] = vertice
                 distancia[adyacente] = distanciaActual
                 heap.encolar([adyacente,distancia[adyacente]])
 
+    
     return padre, distancia
 
 def cent_cmp(tupla1,tupla2):

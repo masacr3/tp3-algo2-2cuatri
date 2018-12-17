@@ -32,7 +32,6 @@ def main():
     dic_aeropuertos = {} #Cada clave es una ciudad, con sus respectivos aeropuertos
 
     cargar_flycombi(grafo,nombre_arch_aeropuertos,nombre_arch_vuelos,dic_aeropuertos)
-    pruebas_dic_aeropuertos(dic_aeropuertos)
 
     try:
         linea_comando = input()
@@ -40,12 +39,10 @@ def main():
     	print("No hay comandos de entrada")
 
     while(linea_comando):
-        comando_parametros = linea_comando.split(",")
+        comando_parametros = linea_comando.rstrip().split(",")
         comando = comando_parametros[0].split(" ")
         if(len(comando)==2): comando_parametros[0] = comando[1]
-        print(comando[0])
-        print(comando_parametros)
-        if not ejecutar_operacion(comando[0],comando_parametros,grafo):
+        if not ejecutar_operacion(comando[0],comando_parametros,grafo,dic_aeropuertos):
             print("Ups")
         else:
             print("Ok")

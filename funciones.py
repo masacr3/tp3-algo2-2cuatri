@@ -17,34 +17,27 @@ itinerario = "itinerario"
 exportar_kml = "exportar_kml"
 listar_operaciones = "listar_operaciones"
 
-pos_comando = 0
-pos_parametros = 1
 
-ciudad = 0
-codigo_aeropuerto = 1
-latitud = 2
-longitud = 3
-
-aeropuerto_i = 0
-aeropuerto_j = 1
-tiempo_promedio = 2
-precio = 3
-cant_vuelos_entre_aeropuertos = 4
-
-def cargar_flycombi(grafo,aeropuertos,vuelos,dic_aeropuertos):
-    i = 0
+def cargar_flycombi(grafo,aeropuertos,vuelos,h):
     with open(aeropuertos) as lista_aeropuertos:
         for aeropuerto in lista_aeropuertos:
-            print(i)
-            i += 1
-            ciudad,codigo_aeropuerto,latitud,longitud = aeropuerto.rstrip('\n').split(",")
+            ciudad,cod,latitud,longitud = aeropuerto.rstrip('\n').rstrip('\r').split(",")
 
-            dic_aeropuertos[ciudad][codigo_aeropuerto] = [float(latitud),float(longitud)]
+            if ciudad not in h:
+                h[ciudad] = {}
+
+            h[ciudad][cod] = [float(latitud), float(longitud)]
 
     with open(vuelos) as lista_vuelos:
         for vuelo in lista_vuelos:
             cod_aeropuerto_i,cod_aeropuerto_j, t_promedio, precio, cant_vuelos = vuelo.rstrip('\n').split(",")
-            grafo.agregarArista(cod_aeropuerto_i, cod_aeropuerto_j, t_promedio, precio, cant_vuelos)
+            if cod_aeropuerto_i not in grafo:
+                grafo.agregarVertice(cod_aeropuerto_i)
+
+            if cod_aeropuerto_j not in grafo:
+                grafo.agregarVertice(cod_aeropuerto_j)
+
+            grafo.agregarArista(cod_aeropuerto_i, cod_aeropuerto_j, [int(t_promedio), int(precio), int(cant_vuelos)])
 
 
 def _camino_mas(origen,destino,grafo,f_cmp,dic_aeropuertos):
@@ -57,16 +50,16 @@ def _camino_mas(origen,destino,grafo,f_cmp,dic_aeropuertos):
 
     for aeropuerto_partida in dic_aeropuertos[origen]:
         padre, distancia = DIJKSTRA(grafo , aeropuerto_partida, f_cmp)
-
-        caminos.append([padre,distacia])
+        if padre != None:
+            caminos.append([padre,distancia])
 
     for aeropuerto_destino in dic_aeropuertos[destino]:
 
-        for padre,distacia in caminos:
+        for padre,distancia in caminos:
 
-            if distacia[aeropuerto_destino] < distancia_Actual:
+            if distancia[aeropuerto_destino] < distancia_actual:
                 padreActual = padre
-                distaciaActual = distacia
+                distaciaActual = distancia
                 distancia_actual = distancia[aeropuerto_destino]
                 destinoActual = aeropuerto_destino
 
@@ -82,25 +75,27 @@ def _camino_mas(origen,destino,grafo,f_cmp,dic_aeropuertos):
 
 def mostrarCamino(camino):
 	for aeropuerto in range(len(camino)-1):
-		print("{} -> ".format(camino[aeropuerto]), end = " ")
+		print("{} -> ".format(camino[aeropuerto]), end = "")
 	print(camino[-1])
 
 def f_camino_mas(parametros,grafo,dic_ciudades):
-	print(len(parametros))
-	if len(parametros) != 3: return False
-	modo = 0
-	origen = 1
-	destino = 2
-	print(parametros[modo])
-	if parametros[modo] == "barato":
-		camino = _camino_mas(parametros[origen],parametros[destino],grafo,f_cmp_precio,dic_ciudades)
-		mostrarCamino(camino)
-		return True
-	if parametros[modo] == "rapido":
-		camino = _camino_mas(parametros[origen],parametros[destino],grafo,f_cmp_tiempo,dic_ciudades)
-		mostrarCamino(camino)
-		return True
-	return False
+
+    if len(parametros) != 3: return False
+    modo = 0
+    origen = 1
+    destino = 2
+
+    if parametros[modo] == "barato":
+        camino = _camino_mas(parametros[origen],parametros[destino],grafo,f_cmp_precio,dic_ciudades)
+        mostrarCamino(camino)
+        return True
+
+    if parametros[modo] == "rapido":
+        camino = _camino_mas(parametros[origen],parametros[destino],grafo,f_cmp_tiempo,dic_ciudades)
+        mostrarCamino(camino)
+        return True
+
+    return False
 
 def f_camino_escalas(l_comando,grafo):
 	if len(l_comando) != 2: return False
@@ -150,8 +145,6 @@ def f_listar_operaciones():
 
 def ejecutar_operacion(comando,parametros,grafo,dic_ciudades):
     if not comando: return False
-    print(camino_mas)
-    print(comando)
     if comando == listar_operaciones: return f_listar_operaciones()
     if comando == camino_mas: return f_camino_mas(parametros,grafo,dic_ciudades)
     if comando == camino_escalas: return f_camino_escalas(parametros,grafo)

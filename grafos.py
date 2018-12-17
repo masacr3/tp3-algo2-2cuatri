@@ -7,7 +7,7 @@ class Grafo:
         self.cantidad = 0
         self.dirigido = dirigido
 
-    def agregarVertice(self, vertice, dato):
+    def agregarVertice(self, vertice):
         self.vertices[vertice] = {} #aca van los adyacentes
         self.cantidad += 1
 
@@ -27,7 +27,7 @@ class Grafo:
         if vertice not in self.vertices:
             return -1
 
-        return self.vertices[vertice].get(adyacente, -1)
+        return self.vertices[vertice][adyacente]
 
     def obtenerAdyacentes(self,vertice):
         return list(self.vertices[vertice])
