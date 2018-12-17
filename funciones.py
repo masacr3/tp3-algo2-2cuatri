@@ -1,4 +1,5 @@
 from grafos import *
+from biblioteca import *
 
 camino_mas = "camino_mas"
 camino_escalas = "camino_escalas"
@@ -54,22 +55,26 @@ def mostrarCamino(camino):
 		print("{} -> ".format(camino[aeropuerto]),end = "")
 	print(camino[-1])
 
-
-def f_camino_mas(l_comando,grafo,cmp_costos,cmp_rapidez):
-	if len(l_comando) != 2: return False
+def f_camino_mas(l_comando,grafo):
+	if len(l_comando) != 2:
+		print("len->",len(l_comando),l_comando)
+		print("1")
+		return False
 	parametros = l_comando[pos_parametros].split(',')
-	if len(parametros) != 3: return False
+	if len(parametros) != 3:
+		print("2")
+		return False
 	modo = 0
 	origen = 1
 	destino = 2
 	if parametros[modo] == "barato":
-		camino = camino_mas_barato(parametros[origen],parametros[destino],grafo,cmp_costos)
+		camino = camino_mas_barato(parametros[origen],parametros[destino],grafo,f_cmp_precio)
 		mostrarCamino(camino)
-		return
+		return True
 	if pos_parametros[modo] == "rapido":
-		camino = camino_mas_rapido(parametros[origen],pos_parametros[destino],grafo,cmp_rapidez)
+		camino = camino_mas_rapido(parametros[origen],pos_parametros[destino],grafo,f_cmp_tiempo)
 		mostrarCamino(camino)
-		return
+		return True
 	return False
 
 def f_camino_escalas(l_comando,grafo):

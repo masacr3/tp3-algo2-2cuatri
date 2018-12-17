@@ -1,6 +1,6 @@
 #!/usr/bin/python
 from grafos import *
-from funciones import * 
+from funciones import *
 from biblioteca import *
 import csv
 import argparse
@@ -19,7 +19,7 @@ precio = 3
 cant_vuelos_entre_aeropuertos = 4
 
 def main():
-    
+
     parser = argparse.ArgumentParser(description='Programa Flycombi')
     parser.add_argument('aeropuertos',metavar='archivo_aeropuertos',help='Archivo csv con datos de aeropuertos a procesar')
     parser.add_argument('vuelos',metavar='archivo_vuelos',help='Archivo csv con datos de vuelos a procesar')
@@ -41,16 +41,18 @@ def main():
             if grafo.agregarArista(registro[aeropuerto_i],registro[aeropuerto_j],registro): continue
             print("No agrego arista "+registro[aeropuerto_i]+"-"+registro[aeropuerto_j])
 
-    pruebas_grafo(grafo)
     try:
         linea_comando = input()
-    except EOFError: 
+    except EOFError:
     	print("No hay comandos de entrada")
 
     while(linea_comando):
-    	comando_parametros = linea_comando.split(" ")
-        if not ejecutar_operacion(comando_parametros,grafo): print("Ups")
-        else: print("Ok")
+        comando_parametros = linea_comando.split(" ")
+        if not ejecutar_operacion(comando_parametros,grafo):
+            print("Ups")
+        else:
+            print("Ok")
+
         try:
             linea_comando = input()
         except EOFError:
