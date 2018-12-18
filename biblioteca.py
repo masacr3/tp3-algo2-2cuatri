@@ -8,6 +8,7 @@
 from grafos import *
 from colas import *
 
+"""
 def dfs(grafo, v, visitados, padres, orden):
 
     visitados[v] = v
@@ -31,6 +32,32 @@ def DFS(grafo, origen):
     dfs(grafo, origen, visitados, padre, orden)
 
     return padres, orden
+"""
+
+def DFS(grafo, origen, visitados, l,n,etapa):
+    if origen not in visitados:
+        visitados[origen] = origen
+        l.append(origen)
+
+    for w in grafo.obtenerAdyacentes(origen):
+        if es_solucion(grafo, w, visitados, l,n):
+            return True
+
+        if w == l[0] or w not in visitados :
+            if DFS(grafo, w, visitados, l,n,etapa+1):
+                return True
+
+    del visitados[origen]
+    l.pop()
+    etapa -= 1
+    return False
+
+def es_solucion(grafo, v, visitados, l, n):
+
+    if v in visitados and len(visitados) == n and l[0] == v:
+        l.append(v)
+        return True
+    return False
 
 def BFS(grafo, origen):
 

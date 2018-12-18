@@ -2,7 +2,7 @@ from grafos import *
 from biblioteca import *
 
 def main ():
-    g = Grafo(True)
+    g = Grafo(False)
 
     vertices = ["a","b","c","d","e","f"]
 
@@ -32,20 +32,16 @@ def main ():
 
     g.agregarArista(e,f,2)
 
-    padre , orden = BFS(g,a)
 
-    actual = c
-    camino = []
-    camino2 = [a,d]
+    visitados = {}
+    l = []
 
-    while actual != None:
-        camino.append(actual)
-        actual = padre[actual]
+    origen = a
+    visitados[origen] = origen
+    l.append(a)
+    DFS(g,origen,visitados,l, 2,0)
 
-    camino.reverse()
-
-    mostrarCamino(camino)
-    mostrarCamino(camino2)
-
+    mostrarCamino(l)
+    
 
 main()
