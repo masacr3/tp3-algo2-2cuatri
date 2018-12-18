@@ -39,10 +39,10 @@ def main():
     	print("No hay comandos de entrada")
 
     while(linea_comando):
-        comando_parametros = linea_comando.rstrip().split(",")
-        comando = comando_parametros[0].split(" ")
-        if(len(comando)==2): comando_parametros[0] = comando[1]
-        if not ejecutar_operacion(comando[0],comando_parametros,grafo,dic_aeropuertos):
+
+        comando = linea_comando.rstrip().split(" ")[0]
+
+        if not ejecutar_operacion(comando,linea_comando,grafo,dic_aeropuertos):
             print("Ups")
         else:
             print("Ok")

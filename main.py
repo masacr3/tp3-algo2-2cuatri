@@ -32,16 +32,11 @@ def main ():
 
     g.agregarArista(e,f,2)
 
-
     visitados = {}
     l = []
-
     origen = a
-    visitados[origen] = origen
-    l.append(a)
-    DFS(g,origen,visitados,l, 2,0)
-
+    DFS(g,origen,visitados,l, 3,1)
     mostrarCamino(l)
-    
+
 
 main()

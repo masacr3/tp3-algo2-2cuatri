@@ -1,3 +1,4 @@
 camino_mas rapido,San Diego,New York
 camino_mas barato,San Diego,New York
-camino_escalas San Diego,New York
+camino_escalas Myrtle Beach,Peoria
+camino_escalas Petersburg,Rhinelander
