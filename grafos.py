@@ -11,7 +11,7 @@ class Grafo:
         self.vertices[vertice] = {} #aca van los adyacentes
         self.cantidad += 1
 
-    def agregarArista(self, vertice, adyacente, peso):
+    def agregarArista(self, vertice, adyacente, peso = 1):
 
         if not self.verticePertenece(vertice) or not self.verticePertenece(adyacente):
             return False

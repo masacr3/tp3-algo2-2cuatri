@@ -164,8 +164,32 @@ def f_vacaciones(parametros,grafo,dic_aeropuertos):
     mostrarCamino(camino)
     return True
 
-def f_itinerario(l_comando,grafo):
-	return true
+def cargarGrafo(grafo,archivo):
+
+    with open (archivo) as recorrido:
+        ciudades = recorrido.readline().rstrip().split(",")
+
+        for ciudad in ciudades:
+            grafo.agregarVertice(ciudad)
+
+        for condicion in recorrido:
+            ciudad_i, ciudad_j = condicion.rstrip().split(",")
+            grafo.agregarArista(ciudad_i,ciudad_j)
+
+
+def f_itinerario(l_comando,grafo,dic_aeropuertos):
+    grafoCiudades = Grafo(True)
+    cargarGrafo(grafoCiudades,"itinerario_ejemplo.csv")
+    itinerario = ORDEN_TOPOLOGICO(grafoCiudades)
+    print(" ,".join(itinerario))
+    TIEMPO = 0 #tiempo
+    for ciudad in range(len(itinerario)-1):
+        origen = itinerario[ciudad]
+        destino = itinerario[ciudad + 1]
+        l = _camino_mas(origen,destino,grafo,f_cmp_heap,TIEMPO,dic_aeropuertos)
+        mostrarCamino(l)
+    return True
+
 def f_exportar_kml(l_comando,grafo):
 	return true
 
@@ -196,7 +220,7 @@ def ejecutar_operacion(comando,parametros,grafo,dic_aeropuertos):
     if comando == recorrer_mundo: return f_recorrer_mundo(parametros,grafo)
     if comando == recorrer_mundo_aprox: return f_recorrer_mundo_aprox(parametros,grafo)
     if comando == vacaciones: return f_vacaciones(parametros,grafo,dic_aeropuertos) #ya esta
-    if comando == itinerario: return f_itinerario(parametros,grafo)
+    if comando == itinerario: return f_itinerario(parametros,grafo,dic_aeropuertos) #ya esta
     if comando == exportar_kml: return f_exportar_kml(parametros,grafo) #ya esta ponele
 
     return False

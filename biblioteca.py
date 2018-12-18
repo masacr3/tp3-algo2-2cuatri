@@ -91,9 +91,9 @@ def BFS(grafo, origen):
     return padre, orden
 
 def mostrarCamino(camino):
-	for i in range(len(camino)-1):
-		print("{} -> ".format(camino[i]), end = "")
-	print(camino[-1])
+    for i in range(len(camino)-1):
+        print("{} -> ".format(camino[i]), end = "")
+    print(camino[-1])
 
 
 INFINITO = 9999999 #simulamos un numero gigante
@@ -164,7 +164,7 @@ def centralidad(grafo):
             cent[w] += cent_aux[w]
     return cent
 
-def orden_topologico(grafo):
+def ORDEN_TOPOLOGICO(grafo):
     grados = {}
 
     for vertice in grafo:
@@ -180,7 +180,7 @@ def orden_topologico(grafo):
 
     for vertice in grafo:
 
-        if grados[vertice] == 0: cola.encolar(vertice)
+        if grados[vertice] == 0 : cola.encolar(vertice)
 
     while not cola.esta_vacia():
         vertice = cola.desencolar()
