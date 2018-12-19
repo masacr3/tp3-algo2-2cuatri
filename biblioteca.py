@@ -7,6 +7,7 @@
 
 from grafos import *
 from colas import *
+import random
 
 """
 def dfs(grafo, v, visitados, padres, orden):
