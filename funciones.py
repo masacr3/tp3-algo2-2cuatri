@@ -1,6 +1,8 @@
 from grafos import *
 from biblioteca import *
 from f_comparacion import *
+from random_walks import *
+import random
 import sys
 import csv
 
@@ -60,8 +62,7 @@ def _camino_mas(origen,destino,grafo,f_cmp,peso,dic_aeropuertos):
                 padreActual = padre
                 destinoActual = aeropuerto_destino
                 distancia_actual = distancia[aeropuerto_destino]
-
-
+                
     caminoMas = []
     actual = destinoActual
 
@@ -70,12 +71,11 @@ def _camino_mas(origen,destino,grafo,f_cmp,peso,dic_aeropuertos):
         actual = padreActual[actual]
 
     caminoMas.reverse()
+
     return caminoMas
 
 def f_camino_mas(parametros,grafo,dic_ciudades):
-
     opciones = parametros[11:].split(",")
-
     modo = opciones[0]
 
     if modo not in ["barato","rapido"]: return False
@@ -106,10 +106,9 @@ def _camino_escalas(origen,destino,grafo,f_cmp,index,dic_aeropuertos):
                 destinoActual = aeropuerto_destino
                 orden_actual = orden[aeropuerto_destino]
 
-
     actual = destinoActual
-
     camino = []
+
     while actual != None:
         camino.append(actual)
         actual = padre[actual]
@@ -130,9 +129,7 @@ def f_camino_escalas(parametros,grafo,dic_ciudades):
     return True
 
 def f_centralidad(l_comando,grafo):
-	if len(l_comando) != 2: return False
-
-	return True
+    return True
 
 def f_pagerank(l_comando,grafo):
 	return True

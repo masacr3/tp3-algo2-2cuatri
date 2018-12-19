@@ -1,6 +1,1 @@
-vacaciones New York,15
-vacaciones Amarillo,5
-vacaciones San Diego,3
-vacaciones San Diego,4
-vacaciones San Diego,5
-vacaciones San Diego,6
+
