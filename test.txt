@@ -1,1 +1,8 @@
-
+listar_operaciones
+camino_mas rapido,San Diego,New York
+camino_mas barato,San Diego,New York
+centralidad_aprox 3
+pagerank 5
+vacaciones San Diego,5
+vacaciones New York,15
+itinerario itinerario_ejemplo.csv

@@ -1,7 +1,6 @@
-from grafos import *
+from grafo import *
 from biblioteca import *
 from f_comparacion import *
-from random_walks import *
 import random
 import sys
 import csv
@@ -64,7 +63,7 @@ def _camino_mas(origen,destino,grafo,f_cmp,peso,dic_aeropuertos):
                 padreActual = padre
                 destinoActual = aeropuerto_destino
                 distancia_actual = distancia[aeropuerto_destino]
-                
+
     caminoMas = []
     actual = destinoActual
 
@@ -231,7 +230,10 @@ def f_vacaciones(parametros,grafo,dic_aeropuertos):
     origen = opcion[0]
     n = opcion[1]
     camino = _viaje_lugares(origen,n,grafo,dic_aeropuertos)
-    mostrarCamino(camino)
+    if len(camino) <= int(n):
+        print("No se encontro recorrido")
+    else:
+        mostrarCamino(camino)
     return True
 
 def cargarGrafo(grafo,archivo):
@@ -247,9 +249,10 @@ def cargarGrafo(grafo,archivo):
             grafo.agregarArista(ciudad_i,ciudad_j)
 
 
-def f_itinerario(l_comando,grafo,dic_aeropuertos):
+def f_itinerario(parametros,grafo,dic_aeropuertos):
+    archivo = parametros.split(" ")[1]
     grafoCiudades = Grafo(True)
-    cargarGrafo(grafoCiudades,"itinerario_ejemplo.csv")
+    cargarGrafo(grafoCiudades,archivo)
     itinerario = ORDEN_TOPOLOGICO(grafoCiudades)
     print(" ,".join(itinerario))
     TIEMPO = 0 #tiempo
@@ -267,15 +270,15 @@ def f_exportar_kml(l_comando,grafo):
 def f_listar_operaciones():
     print (camino_mas)
     print (camino_escalas)
-    print (centralidad)
+    #print (centralidad)
     print (centralidad_aprox)
     print (pagerank)
-    print (nueva_aerolinea)
-    print (recorrer_mundo)
-    print (recorrer_mundo_aprox)
+    #print (nueva_aerolinea)
+    #print (recorrer_mundo)
+    #print (recorrer_mundo_aprox)
     print (vacaciones)
     print (itinerario)
-    print (exportar_kml)
+    #print (exportar_kml)
     return True
 
 
@@ -284,7 +287,7 @@ def ejecutar_operacion(comando,parametros,grafo,dic_aeropuertos):
     if comando == listar_operaciones: return f_listar_operaciones() #ya esta
     if comando == camino_mas: return f_camino_mas(parametros,grafo,dic_aeropuertos) #ya esta
     if comando == camino_escalas: return f_camino_escalas(parametros,grafo,dic_aeropuertos) #ya esta
-    if comando == centralidad: return f_centralidad(parametros,grafo) 
+    if comando == centralidad: return f_centralidad(parametros,grafo)
     if comando == centralidad_aprox: return f_centralidad_aprox(parametros,grafo) #ya esta
     if comando == pagerank: return f_pagerank(parametros,grafo) #ya esta
     if comando == nueva_aerolinea: return f_nueva_aerolinea(parametros,grafo)

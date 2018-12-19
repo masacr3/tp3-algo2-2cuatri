@@ -5,7 +5,7 @@
 
 # ? CENTRALIDAD(grafo)
 
-from grafos import *
+from grafo import *
 from colas import *
 import random
 

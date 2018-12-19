@@ -1,11 +1,10 @@
 #!/usr/bin/python
-from grafos import *
+from grafo import *
 from funciones import *
 from biblioteca import *
 import csv
 import argparse
 import sys
-from pruebas import *
 
 ciudad = 0
 codigo_aeropuerto = 1
@@ -42,19 +41,12 @@ def main():
 
         comando = linea_comando.rstrip().split(" ")[0]
 
-        if not ejecutar_operacion(comando,linea_comando,grafo,dic_aeropuertos):
-            print("Ups")
-        else:
-            print("Ok")
+        ejecutar_operacion(comando,linea_comando,grafo,dic_aeropuertos)
 
         try:
             linea_comando = input()
         except EOFError:
             break
-
-
-
-
 
 
 main()
