@@ -19,6 +19,8 @@ itinerario = "itinerario"
 exportar_kml = "exportar_kml"
 listar_operaciones = "listar_operaciones"
 
+L_rwalk = 50
+K_rwalk = 150
 
 def cargar_flycombi(grafo,aeropuertos,vuelos,h):
     with open(aeropuertos) as lista_aeropuertos:
@@ -129,10 +131,83 @@ def f_camino_escalas(parametros,grafo,dic_ciudades):
     return True
 
 def f_centralidad(l_comando,grafo):
+    parametros = l_comando[12:].split(",")
+    if(len(parametros)) != 1: return False
+    n = int(parametros[0])
+    cent = obtener_centralidad(grafo,f_cmp_heap,2)
+    cent_ordenados = ordenar_vertices(cent)
+    for i in range(n-1):
+        print("{}, ".format(cent_ordenados[i][0]), end = "")
+        print(cent_ordenados[i][1])
+    print("{}, {}".format(cent_ordenados[n-1][0],cent_ordenados[n-1][1]))
     return True
 
+def f_centralidad_aprox(l_comando,grafo):
+    parametros = l_comando[18:].split(",")
+    if(len(parametros)) != 1: return False
+    n = int(parametros[0])
+    cent = {}
+    for v in grafo:
+        cent[v]=0
+
+    for i in range(K_rwalk):
+        recorrido = Random_walk(grafo,L_rwalk)
+        for v in recorrido:
+            cent[v] += 1
+
+    cent_ordenados = ordenar_vertices(cent)
+    for i in range(n-1):
+        print("{}, ".format(cent_ordenados[i][0]),end = "")
+    print("{}".format(cent_ordenados[n-1][0]))
+
+    return True
+
+
+def _pagerank(grafo,d,me):
+    pageRanks = {}
+    pageRanks_aux = {}
+    n = grafo.obtenerCantidad()
+    rp = (1-d)/n
+    for v in grafo:
+        pageRanks_aux[v] = 1/n
+    convergencia = True
+    while convergencia:
+        pageRanks = pageRanks.fromkeys(pageRanks_aux,0)
+        for v in grafo:
+            for w in grafo.obtenerAdyacentes(v):
+                salida = len(grafo.obtenerAdyacentes(w))
+                if salida == 0: continue
+                else:
+                    MPi = pageRanks_aux[w]/salida
+                    pageRanks[v] += MPi
+        convergencia = False
+        for v in grafo:
+            pageRanks[v] = rp + d*pageRanks[v]
+            v_converg = abs(pageRanks[v]-pageRanks_aux[v])
+            if v_converg > me:
+                convergencia = True
+            pageRanks_aux[v] = pageRanks[v]
+
+    return pageRanks
+
 def f_pagerank(l_comando,grafo):
-	return True
+    parametros = l_comando[9:].split(",")
+    if(len(parametros)) != 1: return False
+    n = int(parametros[0])
+
+    p_rank = _pagerank(grafo,0.85,0.05)
+
+    suma = 0
+    for rank in p_rank:
+        suma += p_rank[rank]
+
+    ranking = ordenar_vertices(p_rank)
+
+    for i in range(n-1):
+        print("{}, ".format(ranking[i][0]), end = "")
+    print("{}".format(ranking[n-1][0]))
+
+    return True
 
 def f_nueva_aerolinea(l_comando,grafo):
 	return True
@@ -209,8 +284,9 @@ def ejecutar_operacion(comando,parametros,grafo,dic_aeropuertos):
     if comando == listar_operaciones: return f_listar_operaciones() #ya esta
     if comando == camino_mas: return f_camino_mas(parametros,grafo,dic_aeropuertos) #ya esta
     if comando == camino_escalas: return f_camino_escalas(parametros,grafo,dic_aeropuertos) #ya esta
-    if comando == centralidad: return f_centralidad(parametros,grafo)
-    if comando == pagerank: return f_pagerank(parametros,grafo)
+    if comando == centralidad: return f_centralidad(parametros,grafo) 
+    if comando == centralidad_aprox: return f_centralidad_aprox(parametros,grafo) #ya esta
+    if comando == pagerank: return f_pagerank(parametros,grafo) #ya esta
     if comando == nueva_aerolinea: return f_nueva_aerolinea(parametros,grafo)
     if comando == recorrer_mundo: return f_recorrer_mundo(parametros,grafo)
     if comando == recorrer_mundo_aprox: return f_recorrer_mundo_aprox(parametros,grafo)
