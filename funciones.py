@@ -118,19 +118,6 @@ def _camino_escalas(origen,destino,grafo,f_cmp,index,dic_aeropuertos):
 
     return camino
 
-def _viaje_lugares(origen,n,grafo,dic_aeropuertos):
-
-    largo = int(n)
-    l = []
-    for aeropuerto_origen in dic_aeropuertos[origen]:
-        visitados = {}
-        l = []
-        if DFS(grafo,aeropuerto_origen,visitados,l,largo,1):
-            return l
-
-    return l
-
-
 def f_camino_escalas(parametros,grafo,dic_ciudades):
 
     opciones = parametros[15:].split(",")
@@ -157,9 +144,20 @@ def f_recorrer_mundo(l_comando,grafo):
 def f_recorrer_mundo_aprox(l_comando,grafo):
 	return true
 
+def _viaje_lugares(origen,n,grafo,dic_aeropuertos):
+    largo = int(n)
+    l = []
+    for aeropuerto_origen in dic_aeropuertos[origen]:
+        visitados = {}
+        l = []
+        if DFS(grafo,aeropuerto_origen,visitados,l,largo,1):
+            return l
+    return l
+
 def f_vacaciones(parametros,grafo,dic_aeropuertos):
-    origen = parametros[0][11:]
-    n = parametros[1]
+    opcion = parametros[11:].split(",")
+    origen = opcion[0]
+    n = opcion[1]
     camino = _viaje_lugares(origen,n,grafo,dic_aeropuertos)
     mostrarCamino(camino)
     return True
