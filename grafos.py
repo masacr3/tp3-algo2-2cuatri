@@ -37,3 +37,9 @@ class Grafo:
 
     def __iter__(self):
         return iter(self.vertices)
+    
+    def obtenerCantidad(self):
+        return self.cantidad
+    
+    def obtenerVertices(self):
+        return list(self.vertices.keys())
