@@ -90,6 +90,23 @@ def BFS(grafo, origen):
 
     return padre, orden
 
+def random_adyacente(grafo,v):
+    l = grafo.obtenerAdyacentes(v)
+    return random.choice(l)
+
+def _random_walk(grafo,n,i,recorrido,v):
+    if i >= n: return
+    recorrido.append(v)
+    siguiente = random_adyacente(grafo,v)
+    _random_walk(grafo,n,i+1,recorrido,siguiente)
+
+
+def Random_walk(grafo,n):
+    origen = random.choice(grafo.obtenerVertices())
+    recorrido = []
+    _random_walk(grafo,n,0,recorrido,origen)
+    return recorrido
+
 def mostrarCamino(camino):
     for i in range(len(camino)-1):
         print("{} -> ".format(camino[i]), end = "")
@@ -135,29 +152,25 @@ def DIJKSTRA(grafo, origen, cmp_dijkstra,index):
 
     return padre, distancia
 
-def cent_cmp(tupla1,tupla2):
-    return (tupla1[1]>tupla2[1]) - (tupla1[1]<tupla2[1])
+def ordenar_vertices(distancias):
+    l = []
+    for v in distancias:
+        if(distancias[v] == INFINITO): continue
+        l.append((v,distancias[v]))
+    l.sort(reverse = True,key=lambda x: x[1])
+    return l
 
-def ordenar_vertices(grafo,distancias,f_cmp):
-    v_aux = Heap(f_cmp)
-    for v in grafo:
-        if distancias[v] == INFINITO: continue
-        v_aux.encolar((v,distancias[v]))
-    vertices = []
-    for v,d in v_aux:
-        vertices.append(v)
-    return vertices
-
-def centralidad(grafo):
+def obtener_centralidad(grafo,f_cmp,index):
     cent = {}
     for v in grafo: cent[v] = 0
     for v in grafo:
-        padre, distancia = DIJKSTRA(grafo,v)
+        #padre, distancia = DIJKSTRA(grafo,v,f_cmp,index)
+        padre, distancia = BFS(grafo,v)
         cent_aux = {}
         for w in grafo: cent_aux[w]=0
-        vertices_ordenados = ordenar_vertices(grafo,distancia,cent_cmp)
-        for w in vertices_ordenados:
-            if not w in padre or padre[w] == None: continue
+        vertices_ordenados = ordenar_vertices(distancia)
+        for w,dist in vertices_ordenados:
+            if w == v: continue
             cent_aux[padre[w]] += 1 + cent_aux[w]
         for w in grafo:
             if w == v: continue
